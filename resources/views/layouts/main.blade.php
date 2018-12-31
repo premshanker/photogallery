@@ -19,10 +19,14 @@
             <h5>Main Menu</h5>
             <ul class="side-nav">
             <li><a href="/">Home</a></li>
-            <li><a href="/login">Login</a></li>
+            @guest
+            <li><a href="{!! url('/login'); !!}">Login</a></li>
             <li><a href="/register">Register</a></li>
-            <li><a href="/gallery/create">Create Gallery </a></li>
-            
+            @endguest
+            @auth
+            <li><a href="/gallery/create/">Create Gallery </a></li>
+            <li><a href="{!! url('/logout'); !!}">Logout </a></li>
+            @endauth
             </ul>
           </div>
         </div>
@@ -34,7 +38,15 @@
               <span class="title-bar-title">Mike Mikerson</span>
             </div>
           </div>
-          
+          @if (session()->has('success'))
+            <div class="alert alert-info">
+                
+                <strong>
+                    {!! session()->get('success') !!}
+                </strong>
+            </div>
+             @endif
+         
         @yield('content')
           <hr>
 

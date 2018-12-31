@@ -5,9 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use View;
+use DB;
 
 class GalleryController extends Controller
 {
+    //set table name
+
+   private $table = 'galleries';
+    
     /**
      * Display a listing of the resource.
      *
@@ -16,8 +21,9 @@ class GalleryController extends Controller
     public function index()
     {
         //
-        $test = 'Prem Baj';
-      return view('gallery.index', compact('test'));
+        $galleries = DB::table($this->table)->get();
+        //dd($galleries);
+      return view('gallery.index', compact('galleries'));
     }
 
     /**
@@ -52,6 +58,18 @@ class GalleryController extends Controller
         }else{
             $cover_image_filename = 'noimage.jpg';
         }
+
+        // insert gallery
+        DB::table($this->table)->insert(
+            [
+                'name'        => $name,
+                'description' => $description,
+                'cover_image' => $cover_image_filename,
+                'owner_id'    => $owner_id
+            ]
+        );
+        return redirect()->route('gallery.index')
+                 ->with('success' , 'Gallery created');
     }
 
     /**
@@ -63,7 +81,11 @@ class GalleryController extends Controller
     public function show($id)
     {
         //
-        die('Gallery/show'.$id);
+        //die('Gallery/show'.$id);
+        $gallery = DB::table($this->table)->where('id', $id)->first();
+        $photos = DB::table('photos')->where('gallery_id', $id)->get();
+       // dd($photos);
+      return view('gallery.show', compact('gallery', 'photos'));
     }
 
     /**

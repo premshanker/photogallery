@@ -15,14 +15,19 @@
     return view('welcome');
 });*/
 
+Route::get('/', ['middleware' =>'guest', function(){
+    return view('auth.login');
+  }]);
+  
+Route::middleware(['auth'])->group(function () {
     Route::get('/', 'GalleryController@index');
     Route::resource('gallery', 'GalleryController');
     Route::get('/gallery/show/{id?}', 'GalleryController@show');
-    Route::get('projects/create/(company_id?)', 'ProjectsController@create');
-    Route::post('/projects/adduser', 'ProjectsController@adduser')->name('projects.adduser');
     Route::resource('photo', 'PhotoController');
-    Route::get('/photo/show/{id?}', 'PhotoController@show');
-    Route::resource('roles', 'RolesController');
-    Route::resource('tasks', 'TasksController');
-    Route::resource('users', 'UsersController');
-    Route::resource('comments', 'CommentsController');
+    Route::get('/photo/create/{id?}', 'PhotoController@create');
+    Route::get('/photo/details/{id?}', 'PhotoController@details');
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

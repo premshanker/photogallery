@@ -13,10 +13,10 @@
 
           @foreach($photos as $photo)
             <div class="column">
-            <a href="/photo/details/{{$photo->id}}">
-              <img class="thumbnail" src="/images/{{$photo->image}}">
+            <a href="/gallery/show/{{$photo->id}}">
+              <img class="thumbnail" src="/images/{{$photo->cover_image}}">
               </a>
-              <h5>{{$photo->title}}</h5>
+              <h5>{{$photo->name}}</h5>
               <p>{{$photo->description}}</p>
             </div>
           @endforeach
